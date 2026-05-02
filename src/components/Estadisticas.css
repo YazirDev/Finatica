@@ -1,0 +1,176 @@
+/* ============================================================
+   Estadisticas.css — Página de estadísticas y gráficas
+   ============================================================ */
+
+.estadisticas-page {
+  max-width: 960px;
+}
+
+/* ── Grid de resumen ── */
+.resumen-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+/* ── Cards de estadísticas ── */
+.stat-card {
+  background: var(--bg2);
+  border: 3px solid var(--border);
+  box-shadow: 4px 4px 0 var(--border);
+  padding: 18px 20px;
+}
+
+.stat-ingreso {
+  border-color: var(--green);
+  box-shadow: 4px 4px 0 var(--green);
+}
+
+.stat-egreso {
+  border-color: var(--rojo);
+  box-shadow: 4px 4px 0 var(--rojo);
+}
+
+.stat-positivo {
+  border-color: var(--azul);
+  box-shadow: 4px 4px 0 var(--azul);
+}
+
+.stat-negativo {
+  border-color: #8b0000;
+  box-shadow: 4px 4px 0 #8b0000;
+}
+
+/* ── Etiqueta y valor de stat ── */
+.stat-label {
+  font-size: 7px;
+  font-family: var(--pixel);
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.stat-valor {
+  font-size: 20px;
+  font-family: var(--vt);
+}
+
+.stat-ingreso  .stat-valor { color: var(--green); }
+.stat-egreso   .stat-valor { color: var(--rojo);  }
+.stat-positivo .stat-valor { color: var(--azul);  }
+.stat-negativo .stat-valor { color: #ff4444;      }
+
+/* ── Sección de gráfica ── */
+.seccion-grafica {
+  background: var(--bg2);
+  border: 3px solid var(--border);
+  box-shadow: 4px 4px 0 var(--border);
+  padding: 20px 22px;
+}
+
+/* ── Contenedor de torta y leyenda ── */
+.torta-contenedor {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.torta-leyenda {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Items de la leyenda ── */
+.leyenda-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--vt);
+  font-size: 15px;
+}
+
+.leyenda-color {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.leyenda-icono {
+  width: 20px;
+  text-align: center;
+}
+
+.leyenda-nombre {
+  flex: 1;
+  color: var(--text);
+}
+
+.leyenda-valor {
+  color: var(--yellow);
+  font-size: 16px;
+}
+
+.leyenda-pct {
+  color: var(--muted);
+  font-size: 13px;
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ── Lista de detalle por categoría ── */
+.lista-detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.detalle-fila {
+  display: grid;
+  grid-template-columns: 28px 1fr 1fr 120px 48px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg3);
+  border: 2px solid var(--color-cat, var(--border));
+}
+
+.det-icono {
+  font-size: 18px;
+  text-align: center;
+}
+
+.det-nombre {
+  font-size: 9px;
+  font-family: var(--pixel);
+  color: var(--text);
+  line-height: 1.8;
+}
+
+/* Barra de progreso */
+.det-barra-wrap {
+  height: 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+
+.det-barra {
+  height: 100%;
+  transition: width 0.3s;
+}
+
+.det-valor {
+  font-family: var(--vt);
+  font-size: 16px;
+  color: var(--color-cat, var(--text));
+  text-align: right;
+}
+
+.det-pct {
+  font-family: var(--vt);
+  font-size: 14px;
+  color: var(--muted);
+  text-align: right;
+}

@@ -1,0 +1,213 @@
+/* ============================================================
+   Cuentas.css — Gestión de cuentas y categorías
+   ============================================================ */
+
+.cuentas-page {
+  max-width: 800px;
+}
+
+/* ── Encabezado del panel ── */
+.panel-header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+/* ── Botón de agregar ── */
+.btn-agregar {
+  background: var(--bg3);
+  color: var(--yellow);
+  font-size: 8px;
+  font-family: var(--pixel);
+  padding: 10px 14px;
+  border: 2px solid var(--yellow);
+  box-shadow: 2px 2px 0 var(--yellow);
+  text-transform: uppercase;
+}
+
+.btn-agregar:hover {
+  background: var(--yellow);
+  color: var(--bg);
+}
+
+/* ── Card del formulario ── */
+.form-card {
+  background: var(--bg2);
+  border: 3px solid var(--border);
+  box-shadow: 4px 4px 0 var(--border);
+  padding: 22px;
+  margin-bottom: 22px;
+  position: relative;
+}
+
+/* Franja de color arriba del formulario */
+.form-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(to right, var(--azul) 40%, var(--rojo) 60%);
+}
+
+.form-titulo {
+  font-size: 10px;
+  font-family: var(--pixel);
+  color: var(--yellow);
+  margin-bottom: 16px;
+}
+
+/* ── Selector de tipo de cuenta ── */
+.tipo-selector {
+  display: flex;
+  gap: 8px;
+}
+
+.tipo-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  background: var(--bg3);
+  border: 2px solid var(--border);
+  box-shadow: 2px 2px 0 var(--border);
+  color: var(--muted);
+  font-size: 7px;
+  font-family: var(--pixel);
+  text-transform: uppercase;
+  transition: all 0.1s;
+}
+
+.tipo-btn:hover {
+  border-color: var(--yellow);
+  color: var(--yellow);
+}
+
+.tipo-btn.activo {
+  border-color: var(--yellow);
+  color: var(--yellow);
+  background: rgba(255, 215, 0, 0.1);
+  box-shadow: 2px 2px 0 var(--yellow);
+}
+
+/* ── Picker de íconos ── */
+.picker-iconos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.picker-icono-btn {
+  width: 36px;
+  height: 36px;
+  background: var(--bg3);
+  border: 2px solid var(--border);
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.picker-icono-btn:hover {
+  border-color: var(--muted);
+}
+
+.picker-icono-btn.activo {
+  border-color: var(--yellow);
+  background: rgba(255, 215, 0, 0.1);
+}
+
+/* ── Picker de colores ── */
+.picker-colores {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.picker-color-btn {
+  width: 26px;
+  height: 26px;
+  border: 3px solid transparent;
+  transition: transform 0.1s;
+}
+
+.picker-color-btn:hover {
+  transform: scale(1.2);
+}
+
+.picker-color-btn.activo {
+  border-color: var(--yellow);
+  transform: scale(1.2);
+}
+
+/* ── Lista de cuentas / categorías ── */
+.lista-cuentas {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ── Card de cuenta ── */
+.cuenta-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg2);
+  border: 3px solid var(--color-cuenta, var(--border));
+  box-shadow: 4px 4px 0 var(--color-cuenta, var(--border));
+  padding: 16px 20px;
+  transition: all 0.1s;
+}
+
+.cuenta-card:hover {
+  background: var(--bg3);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--color-cuenta, var(--border));
+}
+
+.cuenta-izq {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cuenta-icono {
+  font-size: 28px;
+}
+
+.cuenta-nombre {
+  font-size: 9px;
+  font-family: var(--pixel);
+  line-height: 1.8;
+}
+
+.cuenta-tipo {
+  font-size: 13px;
+  color: var(--muted);
+  font-family: var(--vt);
+  text-transform: capitalize;
+}
+
+.cuenta-der {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cuenta-saldo {
+  font-family: var(--vt);
+  font-size: 22px;
+  color: var(--color-cuenta, var(--text));
+}
+
+/* ── Texto del modal de confirmación ── */
+.modal-texto {
+  color: var(--muted);
+  font-size: 13px;
+  font-family: var(--vt);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}

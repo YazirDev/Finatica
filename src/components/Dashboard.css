@@ -1,0 +1,216 @@
+/* ============================================================
+   Dashboard.css — Página principal
+   ============================================================ */
+
+.dashboard {
+  max-width: 920px;
+}
+
+/* ── Botón nuevo movimiento ── */
+.btn-nuevo-mov {
+  background: var(--green);
+  color: #fff;
+  font-size: 8px;
+  padding: 10px 14px;
+  border: 2px solid #006622;
+  box-shadow: 3px 3px 0 #006622;
+  font-family: var(--pixel);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-nuevo-mov:hover {
+  filter: brightness(1.2);
+}
+
+/* ── Badge de versión ── */
+.version-badge {
+  font-family: var(--pixel);
+  font-size: 8px;
+  color: var(--yellow);
+  background: rgba(255, 215, 0, 0.1);
+  padding: 2px 6px;
+  border: 1px solid var(--yellow);
+}
+
+/* ── Grid de cards de resumen ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+/* ── Card base ── */
+.card {
+  background: var(--bg2);
+  border: 3px solid var(--border);
+  box-shadow: 4px 4px 0 var(--border);
+  padding: 18px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Línea de color abajo del card */
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+/* ── Variantes de card ── */
+.card--total {
+  border-color: var(--azul);
+  box-shadow: 4px 4px 0 var(--azul);
+}
+.card--total::after   { background: var(--azul); }
+.card--total .card-valor { color: var(--azul); }
+
+.card--ingreso {
+  border-color: var(--green);
+  box-shadow: 4px 4px 0 var(--green);
+}
+.card--ingreso::after { background: var(--green); }
+.card--ingreso .card-valor { color: var(--green); }
+
+.card--egreso {
+  border-color: var(--rojo);
+  box-shadow: 4px 4px 0 var(--rojo);
+}
+.card--egreso::after  { background: var(--rojo); }
+.card--egreso .card-valor { color: var(--rojo); }
+
+/* ── Contenido del card ── */
+.card-label {
+  font-size: 7px;
+  color: var(--muted);
+  font-family: var(--pixel);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+.card-valor {
+  font-size: 20px;
+  font-family: var(--vt);
+  color: var(--text);
+  line-height: 1;
+}
+
+.card-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 6px;
+  font-family: var(--vt);
+}
+
+/* ── Pills de cuentas ── */
+.cuentas-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.cuenta-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg2);
+  border: 3px solid var(--color-cuenta, var(--border));
+  box-shadow: 3px 3px 0 var(--color-cuenta, var(--border));
+  padding: 10px 14px;
+  min-width: 190px;
+}
+
+.pill-icono {
+  font-size: 22px;
+}
+
+.pill-nombre {
+  font-size: 8px;
+  font-family: var(--pixel);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.pill-tipo {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--vt);
+  text-transform: capitalize;
+}
+
+.pill-saldo {
+  margin-left: auto;
+  font-family: var(--vt);
+  font-size: 18px;
+  color: var(--color-cuenta, var(--text));
+}
+
+/* ── Card de gráfica ── */
+.grafica-card {
+  background: var(--bg2);
+  border: 3px solid var(--border);
+  box-shadow: 4px 4px 0 var(--border);
+  padding: 18px 20px;
+  margin-bottom: 22px;
+}
+
+/* ── Filas de movimientos recientes ── */
+.mov-recientes {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fila-mov {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 2px solid transparent;
+  transition: all 0.1s;
+}
+
+.fila-mov:hover {
+  background: var(--bg2);
+  border-color: var(--border);
+}
+
+.fila-icono {
+  font-size: 14px;
+  font-family: var(--pixel);
+  width: 26px;
+  text-align: center;
+}
+
+.fila-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.fila-motivo {
+  font-size: 8px;
+  font-family: var(--pixel);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.8;
+}
+
+.fila-meta {
+  font-size: 12px;
+  color: var(--muted);
+  font-family: var(--vt);
+  margin-top: 2px;
+}
+
+.fila-monto {
+  font-family: var(--vt);
+  font-size: 18px;
+  white-space: nowrap;
+}
