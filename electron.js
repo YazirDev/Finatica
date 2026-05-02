@@ -59,15 +59,15 @@ async function setupDatabase() {
     }
 
     db.run(`
-        CREATE TABLE IF NOT EXISTS transactions cuentas(
+        CREATE TABLE IF NOT EXISTS cuentas (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nombre TEXT NOT NULL,
             tipo TEXT NOT NULL,
             saldo TEXT NOT NULL DEFAULT '0',
             color TEXT NOT NULL DEFAULT '#0e8972',
-            icono TEXT NOT NULL DEFAULT '💰'
-            creato_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            );
+            icono TEXT NOT NULL DEFAULT '💰',
+            creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
     `);
 
     db.run(`
@@ -150,7 +150,7 @@ async function setupDatabase() {
         });
     }
 
-    savedb();
+    saveDb();
 }
 
 function saveDb() {
@@ -159,6 +159,10 @@ function saveDb() {
     fs.writeFileSync(dbPath, Buffer.from(data));
 }
 
+
+function query(sql, params = []) {
+    return toObjects(db.exec(sql, params));
+}
 
 function toObjects(result) {
     if (!result || result.length === 0) return [];
@@ -229,7 +233,7 @@ function setupIpcHandlers() {
 
     ipcMain.handle('categorias:crear', (_, { nombre, icono, color, tipo }) => {
         run(
-            'INSERT INTO categorias (nombre, icono, color, tipo, es_predefinida) VALUES (?, ?, ?, ?, 0)'
+            'INSERT INTO categorias (nombre, icono, color, tipo, es_predefinida) VALUES (?, ?, ?, ?, 0)',
             [nombre, icono || '📌', color || '#6b3fa0', tipo || 'ambos']
         );
         return query('SELECT * FROM categorias ORDER BY id DESC LIMIT 1')[0];
@@ -341,8 +345,8 @@ function setupIpcHandlers() {
           co.nombre  AS cuenta_origen_nombre,
           cd.nombre  AS cuenta_destino_nombre,
           cat.nombre AS categoria_nombre,
-          cat.icono  AS categoria_icono,
-          FROM recurrentes r
+          cat.icono  AS categoria_icono
+        FROM recurrentes r
           LEFT JOIN cuentas    co  ON r.cuenta_origen_id  = co.id
           LEFT JOIN cuentas    cd  ON r.cuenta_destino_id = cd.id
           LEFT JOIN categorias cat ON r.categoria_id      = cat.id
