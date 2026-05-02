@@ -1,6 +1,6 @@
 {
   "name": "finatica",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Control de finanzas personales - Finatica CR",
   "author": "Finatica",
   "main": "electron.js",
