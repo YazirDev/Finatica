@@ -1,0 +1,37 @@
+/* ============================================================
+   NuevoMovimiento.css — Modal de nuevo movimiento
+   ============================================================ */
+
+/* ── Selector de tipo de movimiento ── */
+.tipo-selector-mov {
+  display: flex;
+  gap: 8px;
+}
+
+.tipo-mov-btn {
+  flex: 1;
+  padding: 10px 6px;
+  font-family: var(--pixel);
+  font-size: 7px;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: all 0.1s;
+  text-transform: uppercase;
+}
+
+.tipo-mov-btn:hover {
+  filter: brightness(1.2);
+}
+
+/* ── Caja de error ── */
+.error-box {
+  background: rgba(200, 16, 46, 0.15);
+  border: 2px solid var(--rojo);
+  box-shadow: 2px 2px 0 var(--rojo);
+  padding: 10px 14px;
+  font-size: 9px;
+  color: var(--rojo);
+  font-family: var(--pixel);
+  margin-bottom: 8px;
+  line-height: 2;
+}

@@ -1,0 +1,106 @@
+/* ============================================================
+   Sidebar.css — Menú lateral
+   ============================================================ */
+
+/* ── Contenedor del sidebar ── */
+.sidebar {
+  width: 210px;
+  background: var(--bg2);
+  border-right: 4px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 16px 10px;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* ── Lagarto decorativo ── */
+.sidebar-deco {
+  font-size: 28px;
+  text-align: center;
+  padding: 12px 0 8px;
+  filter: drop-shadow(0 0 6px var(--rojo));
+}
+
+/* ── Mini bandera costarricense ── */
+.cr-flag {
+  display: flex;
+  height: 10px;
+  margin: 0 0 14px;
+  border: 2px solid var(--border);
+  overflow: hidden;
+}
+
+.cr-flag span {
+  flex: 1;
+}
+
+.flag-azul   { background: var(--azul); }
+.flag-blanco { background: var(--blanco); }
+.flag-rojo   { background: var(--rojo); flex: 2 !important; }
+
+/* ── Navegación ── */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+/* ── Botón de navegación ── */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--bg3);
+  border: 2px solid var(--border);
+  box-shadow: 2px 2px 0 var(--border);
+  color: var(--muted);
+  font-size: 7px;
+  font-family: var(--pixel);
+  text-align: left;
+  text-transform: uppercase;
+  transition: all 0.1s;
+}
+
+.nav-item:hover {
+  color: var(--yellow);
+  border-color: var(--yellow);
+  box-shadow: 2px 2px 0 var(--yellow);
+  background: var(--bg2);
+}
+
+/* Estado activo: fondo rojo */
+.nav-item.activo {
+  background: var(--rojo);
+  color: #fff;
+  border-color: var(--yellow);
+  box-shadow: 2px 2px 0 var(--yellow);
+}
+
+.nav-icono {
+  font-size: 16px;
+  width: 22px;
+  text-align: center;
+}
+
+/* ── Botón de nuevo movimiento ── */
+.btn-nuevo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 10px;
+  background: var(--green);
+  color: #fff;
+  font-size: 7px;
+  font-family: var(--pixel);
+  border: 2px solid #006622;
+  box-shadow: 3px 3px 0 #006622;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+.btn-nuevo:hover {
+  filter: brightness(1.2);
+}
