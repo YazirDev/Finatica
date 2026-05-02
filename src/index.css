@@ -1,0 +1,119 @@
+/* ============================================================
+   index.css — Variables CSS y estilos globales
+   Tema: Pixel Art con colores de Costa Rica
+   ============================================================ */
+
+/* ── Reset básico ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Variables de color y tipografía ── */
+:root {
+  /* Fondos */
+  --bg:     #1a0a2e;   /* Fondo principal */
+  --bg2:    #2d1b4e;   /* Fondo de cards */
+  --bg3:    #3d2660;   /* Fondo de inputs y hover */
+
+  /* Bordes */
+  --border: #6b3fa0;
+
+  /* Texto */
+  --text:   #f0e6ff;
+  --muted:  #9b7ec8;
+
+  /* Colores de Costa Rica */
+  --rojo:   #c8102e;   /* Rojo bandera */
+  --azul:   #0075c4;   /* Azul bandera */
+  --blanco: #ffffff;
+
+  /* Semánticos */
+  --green:  #00b341;   /* Ingresos */
+  --red:    #c8102e;   /* Egresos */
+  --yellow: #ffd700;   /* Acentos y títulos */
+
+  /* Tipografía */
+  --pixel: 'Press Start 2P', monospace;  /* Fuente pixel art */
+  --vt:    'VT323', monospace;           /* Fuente retro para números */
+}
+
+/* ── Altura completa ── */
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ── Estilos del body ── */
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--pixel);
+  -webkit-font-smoothing: none;  /* Sin suavizado para efecto pixel */
+  image-rendering: pixelated;
+  user-select: none;
+}
+
+/* ── Scrollbar personalizada ── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg2);
+  border-left: 2px solid var(--border);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--rojo);
+  border: 2px solid var(--bg);
+}
+
+/* ── Inputs y selects globales ── */
+input,
+select,
+textarea {
+  font-family: var(--vt);
+  background: var(--bg3);
+  border: 2px solid var(--border);
+  color: var(--text);
+  padding: 10px 14px;
+  font-size: 18px;
+  outline: none;
+  width: 100%;
+  border-radius: 0;
+  box-shadow: 2px 2px 0 var(--border);
+  transition: border-color 0.1s, box-shadow 0.1s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: var(--yellow);
+  box-shadow: 2px 2px 0 var(--yellow);
+}
+
+select option {
+  background: var(--bg2);
+  font-family: var(--vt);
+}
+
+/* ── Botones base ── */
+button {
+  font-family: var(--pixel);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  image-rendering: pixelated;
+}
+
+/* Efecto de presión al hacer clic */
+button:active {
+  transform: translate(2px, 2px);
+  box-shadow: none !important;
+}
