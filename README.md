@@ -1,0 +1,2 @@
+# Finatica
+finances app management 
