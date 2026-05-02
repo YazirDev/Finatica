@@ -1,0 +1,83 @@
+/* ============================================================
+   TitleBar.css — Barra de título personalizada
+   ============================================================ */
+
+/* ── Contenedor principal ── */
+.titlebar {
+  height: 44px;
+  background: var(--rojo);
+  border-bottom: 4px solid #8b0000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px 0 16px;
+  flex-shrink: 0;
+  position: relative;
+
+  /* Permite arrastrar la ventana desde esta área */
+  -webkit-app-region: drag;
+}
+
+/* Franja azul debajo de la barra roja */
+.titlebar::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--azul);
+}
+
+/* ── Sección izquierda: logo y nombre ── */
+.titlebar-drag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.titlebar-icono {
+  font-size: 20px;
+  filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, 0.5));
+}
+
+.titlebar-nombre {
+  font-size: 9px;
+  font-family: var(--pixel);
+  color: #fff;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* ── Botones de control ── */
+.titlebar-controles {
+  display: flex;
+  gap: 4px;
+
+  /* Los botones no deben arrastrar la ventana */
+  -webkit-app-region: no-drag;
+}
+
+.tb-btn {
+  width: 28px;
+  height: 26px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 10px;
+  font-family: var(--pixel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.1s;
+}
+
+.tb-btn:hover {
+  background: rgba(0, 0, 0, 0.6);
+  border-color: #fff;
+}
+
+/* El botón de cerrar se vuelve rojo oscuro al hover */
+.tb-btn.cerrar:hover {
+  background: #5c0000;
+}
