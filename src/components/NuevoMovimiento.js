@@ -1,23 +1,20 @@
 // ============================================================
-// NuevoMovimiento.js — Modal para registrar un movimiento
-// Maneja: ingresos, egresos y transferencias con categoría
+// NuevoMovimiento.js — Modal para registrar movimientos
+// Usa Firestore via db.js
 // ============================================================
 
 import React, { useState } from 'react';
+import { registrarMovimiento } from '../db';
 
-// Tipos de movimiento disponibles
 const TIPOS = [
-  { value: 'ingreso',       label: '▲ INGRESO',      color: 'var(--green)' },
-  { value: 'egreso',        label: '▼ EGRESO',        color: 'var(--rojo)'  },
-  { value: 'transferencia', label: '◄► TRANSF.',      color: 'var(--azul)'  },
+  { value: 'ingreso',       label: '▲ INGRESO',  color: 'var(--green)' },
+  { value: 'egreso',        label: '▼ EGRESO',   color: 'var(--rojo)'  },
+  { value: 'transferencia', label: '◄► TRANSF.', color: 'var(--azul)'  },
 ];
 
 export default function NuevoMovimiento({ cuentas, categorias, onClose, onSaved }) {
-
-  // Fecha y hora actual como valor inicial
   const ahora = new Date().toISOString().slice(0, 16);
 
-  // ── Estado del formulario ──
   const [tipo,      setTipo]      = useState('egreso');
   const [monto,     setMonto]     = useState('');
   const [motivo,    setMotivo]    = useState('');
@@ -29,55 +26,32 @@ export default function NuevoMovimiento({ cuentas, categorias, onClose, onSaved 
   const [guardando, setGuardando] = useState(false);
   const [error,     setError]     = useState('');
 
-  // Filtrar categorías según el tipo seleccionado
   const categoriasFiltradas = categorias.filter(c =>
     c.tipo === tipo || c.tipo === 'ambos'
   );
 
-  /**
-   * Valida el formulario antes de guardar.
-   * Devuelve un mensaje de error o null si todo está bien.
-   */
   function validar() {
-    if (!monto || parseFloat(monto) <= 0) {
-      return 'Ingresá un monto válido.';
-    }
-    if (!motivo.trim()) {
-      return 'Escribí el motivo, mae.';
-    }
-    if (tipo === 'ingreso' && !destino) {
-      return 'Seleccioná la cuenta destino.';
-    }
-    if (tipo === 'egreso' && !origen) {
-      return 'Seleccioná la cuenta origen.';
-    }
-    if (tipo === 'transferencia' && (!origen || !destino)) {
-      return 'Seleccioná origen y destino.';
-    }
-    if (tipo === 'transferencia' && origen === destino) {
-      return 'Origen y destino deben ser distintos.';
-    }
+    if (!monto || parseFloat(monto) <= 0)             return 'Ingresá un monto válido.';
+    if (!motivo.trim())                               return 'Escribí el motivo.';
+    if (tipo === 'ingreso'  && !destino)              return 'Seleccioná la cuenta destino.';
+    if (tipo === 'egreso'   && !origen)               return 'Seleccioná la cuenta origen.';
+    if (tipo === 'transferencia' && (!origen||!destino)) return 'Seleccioná origen y destino.';
+    if (tipo === 'transferencia' && origen === destino)  return 'Origen y destino deben ser distintos.';
     return null;
   }
 
-  /**
-   * Guarda el movimiento en la base de datos
-   */
   async function guardar() {
-    const mensajeError = validar();
-    if (mensajeError) {
-      setError(mensajeError);
-      return;
-    }
+    const err = validar();
+    if (err) { setError(err); return; }
 
     setGuardando(true);
-    await window.api.registrarMovimiento({
+    await registrarMovimiento({
       tipo,
       monto:            parseFloat(monto),
       motivo:           motivo.trim(),
-      cuenta_origen_id:  origen  ? parseInt(origen)  : null,
-      cuenta_destino_id: destino ? parseInt(destino) : null,
-      categoria_id:      catId   ? parseInt(catId)   : null,
+      cuenta_origen_id:  origen  || null,
+      cuenta_destino_id: destino || null,
+      categoria_id:      catId   || null,
       fecha:             fecha.replace('T', ' '),
       notas,
     });
@@ -85,7 +59,6 @@ export default function NuevoMovimiento({ cuentas, categorias, onClose, onSaved 
     onSaved();
   }
 
-  // Color del tipo seleccionado
   const colorTipo = TIPOS.find(t => t.value === tipo)?.color;
 
   return (
@@ -93,25 +66,25 @@ export default function NuevoMovimiento({ cuentas, categorias, onClose, onSaved 
       <div className="modal-box" onClick={e => e.stopPropagation()}>
         <h2>🇨🇷 NUEVO MOVIMIENTO</h2>
 
-        {/* ── Selector de tipo ── */}
+        {/* Tipo */}
         <div className="form-group">
           <label>Tipo de movimiento</label>
-          <div className="tipo-selector-mov">
+          <div style={{ display: 'flex', gap: 8 }}>
             {TIPOS.map(t => (
               <button
                 key={t.value}
-                className={`tipo-mov-btn ${tipo === t.value ? 'activo' : ''}`}
+                onClick={() => { setTipo(t.value); setCatId(''); setError(''); }}
                 style={{
-                  '--color-tipo': t.color,
-                  borderColor:    tipo === t.value ? t.color : 'var(--border)',
-                  boxShadow:      tipo === t.value ? `2px 2px 0 ${t.color}` : '2px 2px 0 var(--border)',
-                  background:     tipo === t.value ? `${t.color}22` : 'var(--bg3)',
-                  color:          tipo === t.value ? t.color : 'var(--muted)',
-                }}
-                onClick={() => {
-                  setTipo(t.value);
-                  setCatId('');
-                  setError('');
+                  flex: 1,
+                  padding: '10px 6px',
+                  fontFamily: 'var(--pixel)',
+                  fontSize: '7px',
+                  border: `2px solid ${tipo === t.value ? t.color : 'var(--border)'}`,
+                  boxShadow: tipo === t.value ? `2px 2px 0 ${t.color}` : '2px 2px 0 var(--border)',
+                  background: tipo === t.value ? `${t.color}22` : 'var(--bg3)',
+                  color: tipo === t.value ? t.color : 'var(--muted)',
+                  cursor: 'pointer',
+                  textTransform: 'uppercase',
                 }}
               >
                 {t.label}
@@ -120,7 +93,7 @@ export default function NuevoMovimiento({ cuentas, categorias, onClose, onSaved 
           </div>
         </div>
 
-        {/* ── Cuenta origen (egreso y transferencia) ── */}
+        {/* Cuenta origen */}
         {(tipo === 'egreso' || tipo === 'transferencia') && (
           <div className="form-group">
             <label>Cuenta origen</label>
@@ -133,7 +106,7 @@ export default function NuevoMovimiento({ cuentas, categorias, onClose, onSaved 
           </div>
         )}
 
-        {/* ── Cuenta destino (ingreso y transferencia) ── */}
+        {/* Cuenta destino */}
         {(tipo === 'ingreso' || tipo === 'transferencia') && (
           <div className="form-group">
             <label>Cuenta destino</label>
@@ -146,7 +119,7 @@ export default function NuevoMovimiento({ cuentas, categorias, onClose, onSaved 
           </div>
         )}
 
-        {/* ── Monto y categoría ── */}
+        {/* Monto y categoría */}
         <div className="form-row">
           <div className="form-group">
             <label>Monto (₡)</label>
@@ -171,7 +144,7 @@ export default function NuevoMovimiento({ cuentas, categorias, onClose, onSaved 
           </div>
         </div>
 
-        {/* ── Motivo ── */}
+        {/* Motivo */}
         <div className="form-group">
           <label>Motivo *</label>
           <input
@@ -181,7 +154,7 @@ export default function NuevoMovimiento({ cuentas, categorias, onClose, onSaved 
           />
         </div>
 
-        {/* ── Fecha y notas ── */}
+        {/* Fecha y notas */}
         <div className="form-row">
           <div className="form-group">
             <label>Fecha y hora</label>
@@ -201,14 +174,23 @@ export default function NuevoMovimiento({ cuentas, categorias, onClose, onSaved 
           </div>
         </div>
 
-        {/* ── Mensaje de error ── */}
+        {/* Error */}
         {error && (
-          <div className="error-box">
+          <div style={{
+            background: 'rgba(200,16,46,.15)',
+            border: '2px solid var(--rojo)',
+            boxShadow: '2px 2px 0 var(--rojo)',
+            padding: '10px 14px',
+            fontSize: '9px',
+            color: 'var(--rojo)',
+            fontFamily: 'var(--pixel)',
+            marginBottom: 8,
+            lineHeight: 2
+          }}>
             ► {error}
           </div>
         )}
 
-        {/* ── Botones ── */}
         <button
           className="btn-primary"
           onClick={guardar}
@@ -217,9 +199,7 @@ export default function NuevoMovimiento({ cuentas, categorias, onClose, onSaved 
         >
           {guardando ? 'GUARDANDO...' : '► REGISTRAR'}
         </button>
-        <button className="btn-ghost" onClick={onClose}>
-          ✕ CANCELAR
-        </button>
+        <button className="btn-ghost" onClick={onClose}>✕ CANCELAR</button>
       </div>
     </div>
   );
