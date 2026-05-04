@@ -1,6 +1,6 @@
 {
   "name": "finatica",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Control de finanzas personales - Finatica CR",
   "author": "Finatica",
   "main": "electron.js",
@@ -35,6 +35,7 @@
     }
   },
   "dependencies": {
+    "dotenv": "^17.4.2",
     "firebase": "^10.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
