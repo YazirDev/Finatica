@@ -1,0 +1,207 @@
+/* ============================================================
+   Login.css — Pantalla de inicio de sesión
+   ============================================================ */
+
+.login-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: var(--bg);
+  gap: 12px;
+  background-image:
+    linear-gradient(rgba(45, 107, 50, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45, 107, 50, 0.1) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+/* ── Logo ── */
+.login-logo {
+  font-size: 56px;
+  filter: drop-shadow(0 0 12px var(--green));
+  animation: blink 2s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.8; }
+}
+
+/* ── Títulos ── */
+.login-titulo {
+  font-size: 16px;
+  font-family: var(--pixel);
+  color: var(--yellow);
+  text-shadow: 3px 3px 0 var(--accent);
+  text-align: center;
+}
+
+.login-subtitulo {
+  font-size: 13px;
+  font-family: var(--vt);
+  color: var(--muted);
+  margin-top: -4px;
+}
+
+/* ── Mini bandera ── */
+.login-flag {
+  display: flex;
+  width: 120px;
+  height: 10px;
+  border: 2px solid var(--border);
+  overflow: hidden;
+  margin: 4px 0;
+}
+
+.login-flag span  { flex: 1; }
+.lf-azul          { background: var(--azul); }
+.lf-blanco        { background: var(--blanco); }
+.lf-rojo          { background: var(--rojo); flex: 2 !important; }
+
+/* ── Tabs de modo ── */
+.login-tabs {
+  display: flex;
+  gap: 0;
+  border: 2px solid var(--border);
+  margin-top: 4px;
+}
+
+.login-tab {
+  padding: 8px 20px;
+  background: var(--bg2);
+  color: var(--muted);
+  font-size: 7px;
+  font-family: var(--pixel);
+  border: none;
+  cursor: pointer;
+  transition: all 0.1s;
+  text-transform: uppercase;
+}
+
+.login-tab:hover {
+  color: var(--yellow);
+  background: var(--bg3);
+}
+
+.login-tab.activo {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* ── Formulario ── */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 320px;
+}
+
+/* ── Campo ── */
+.login-campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.login-campo label {
+  font-size: 7px;
+  font-family: var(--pixel);
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.login-campo input {
+  font-family: var(--vt);
+  font-size: 18px;
+  background: var(--bg3);
+  border: 2px solid var(--border);
+  color: var(--text);
+  padding: 10px 14px;
+  outline: none;
+  box-shadow: 2px 2px 0 var(--border);
+  width: 100%;
+  transition: border-color 0.1s;
+}
+
+.login-campo input:focus {
+  border-color: var(--yellow);
+  box-shadow: 2px 2px 0 var(--yellow);
+}
+
+.login-campo input:disabled {
+  opacity: 0.6;
+}
+
+/* ── Error ── */
+.login-error {
+  font-size: 8px;
+  font-family: var(--pixel);
+  color: var(--red);
+  text-align: center;
+  line-height: 2;
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid var(--red);
+  padding: 8px;
+}
+
+/* ── Botón principal ── */
+.btn-login {
+  background: var(--accent);
+  color: #fff;
+  font-size: 9px;
+  font-family: var(--pixel);
+  padding: 14px 20px;
+  border: 2px solid #8b5000;
+  box-shadow: 3px 3px 0 #8b5000;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.1s;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.btn-login:hover:not(:disabled) {
+  filter: brightness(1.2);
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 #8b5000;
+}
+
+.btn-login:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Footer ── */
+.login-footer {
+  font-size: 11px;
+  font-family: var(--vt);
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* ── Mensaje de paso actual ── */
+.login-paso {
+  font-size: 9px;
+  font-family: var(--pixel);
+  color: var(--green);
+  text-align: center;
+  line-height: 2;
+}
+
+/* ── Instrucciones durante el login ── */
+.login-instrucciones {
+  background: var(--bg2);
+  border: 2px solid var(--border);
+  padding: 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 280px;
+}
+
+.login-instrucciones p {
+  font-size: 11px;
+  font-family: var(--vt);
+  color: var(--muted);
+}
