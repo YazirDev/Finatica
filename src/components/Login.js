@@ -1,54 +1,106 @@
 // ============================================================
-// Login.js — Pantalla de inicio de sesión con Google
-// Usa el flujo OAuth via navegador externo (funciona en Electron)
+// Login.js — Inicio de sesión con email y contraseña
+// Permite registrarse e iniciar sesión con Firebase Auth
 // ============================================================
 
 import React, { useState } from 'react';
-import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  sendPasswordResetEmail
+} from 'firebase/auth';
 import { auth } from '../firebase';
 import './Login.css';
 
 export default function Login() {
 
+  // Modo: 'login', 'registro' o 'recuperar'
+  const [modo,     setModo]     = useState('login');
+  const [nombre,   setNombre]   = useState('');
+  const [email,    setEmail]    = useState('');
+  const [password, setPassword] = useState('');
   const [cargando, setCargando] = useState(false);
   const [error,    setError]    = useState('');
-  const [paso,     setPaso]     = useState(''); // Mensaje de estado del proceso
+  const [exito,    setExito]    = useState('');
 
   /**
-   * Inicia el flujo de autenticación con Google:
-   * 1. Electron abre el navegador con Google
-   * 2. Usuario acepta los permisos
-   * 3. Electron captura el id_token
-   * 4. Firebase autentica con ese token
+   * Traduce los códigos de error de Firebase a español
    */
-  async function iniciarSesionGoogle() {
-    setCargando(true);
+  function traducirError(code) {
+    const errores = {
+      'auth/invalid-email':        'El correo no es válido.',
+      'auth/user-not-found':       'No existe una cuenta con ese correo.',
+      'auth/wrong-password':       'Contraseña incorrecta.',
+      'auth/invalid-credential':   'Correo o contraseña incorrectos.',
+      'auth/email-already-in-use': 'Ya existe una cuenta con ese correo.',
+      'auth/weak-password':        'La contraseña debe tener al menos 6 caracteres.',
+      'auth/too-many-requests':    'Demasiados intentos. Esperá unos minutos.',
+    };
+    return errores[code] || 'Ocurrió un error. Intentá de nuevo.';
+  }
+
+  /**
+   * Limpia los mensajes al cambiar de modo
+   */
+  function cambiarModo(nuevoModo) {
+    setModo(nuevoModo);
     setError('');
-    setPaso('Abriendo Google en tu navegador...');
+    setExito('');
+  }
 
-    try {
-      // Paso 1: Pedir a Electron que abra el navegador y capture el token
-      const resultado = await window.api.iniciarGoogle();
+  /**
+   * Maneja el envío del formulario
+   */
+  async function handleSubmit() {
+    setError('');
+    setExito('');
 
-      if (!resultado.ok) {
-        throw new Error(resultado.error || 'No se pudo autenticar');
-      }
+    if (!email.trim()) { setError('Ingresá tu correo.'); return; }
 
-      setPaso('Verificando tu cuenta...');
-
-      // Paso 2: Usar el id_token de Google para autenticar en Firebase
-      const credencial = GoogleAuthProvider.credential(resultado.idToken);
-      await signInWithCredential(auth, credencial);
-
-      // El observer en App.js detecta el cambio automáticamente
-      setPaso('¡Listo!');
-
-    } catch (err) {
-      console.error('Error en login:', err);
-      setError('No se pudo iniciar sesión. Intentá de nuevo.');
-      setCargando(false);
-      setPaso('');
+    if (modo === 'recuperar') {
+      await recuperarPassword();
+      return;
     }
+
+    if (!password) { setError('Ingresá tu contraseña.'); return; }
+    if (modo === 'registro' && !nombre.trim()) { setError('Ingresá tu nombre.'); return; }
+
+    setCargando(true);
+    try {
+      if (modo === 'login') {
+        await signInWithEmailAndPassword(auth, email.trim(), password);
+
+      } else {
+        const result = await createUserWithEmailAndPassword(auth, email.trim(), password);
+        await updateProfile(result.user, { displayName: nombre.trim() });
+      }
+      // App.js detecta el cambio de sesión automáticamente
+    } catch (err) {
+      setError(traducirError(err.code));
+      setCargando(false);
+    }
+  }
+
+  /**
+   * Envía un correo para recuperar la contraseña
+   */
+  async function recuperarPassword() {
+    setCargando(true);
+    try {
+      await sendPasswordResetEmail(auth, email.trim());
+      setExito('Te enviamos un correo para recuperar tu contraseña.');
+    } catch (err) {
+      setError(traducirError(err.code));
+    }
+    setCargando(false);
+  }
+
+  /**
+   * Envía el formulario al presionar Enter
+   */
+  function handleKeyDown(e) {
+    if (e.key === 'Enter') handleSubmit();
   }
 
   return (
@@ -68,33 +120,106 @@ export default function Login() {
         <span className="lf-azul"  />
       </div>
 
-      {/* Botón de Google */}
-      <button
-        className="btn-google"
-        onClick={iniciarSesionGoogle}
-        disabled={cargando}
-      >
-        {cargando ? '⏳ CONECTANDO...' : '🔑 INICIAR CON GOOGLE'}
-      </button>
+      {/* Tabs */}
+      <div className="login-tabs">
+        <button
+          className={`login-tab ${modo === 'login' ? 'activo' : ''}`}
+          onClick={() => cambiarModo('login')}
+        >
+          INGRESAR
+        </button>
+        <button
+          className={`login-tab ${modo === 'registro' ? 'activo' : ''}`}
+          onClick={() => cambiarModo('registro')}
+        >
+          REGISTRARSE
+        </button>
+      </div>
 
-      {/* Mensaje de paso actual */}
-      {paso && (
-        <p className="login-paso">► {paso}</p>
-      )}
+      {/* Formulario */}
+      <div className="login-form">
 
-      {/* Error */}
-      {error && (
-        <p className="login-error">► {error}</p>
-      )}
+        {/* Nombre — solo en registro */}
+        {modo === 'registro' && (
+          <div className="login-campo">
+            <label>NOMBRE</label>
+            <input
+              type="text"
+              value={nombre}
+              onChange={e => setNombre(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Tu nombre"
+              disabled={cargando}
+            />
+          </div>
+        )}
 
-      {/* Instrucciones cuando está cargando */}
-      {cargando && (
-        <div className="login-instrucciones">
-          <p>1. Se abrirá tu navegador con Google</p>
-          <p>2. Iniciá sesión con tu cuenta</p>
-          <p>3. Volvé automáticamente a Finatica</p>
+        {/* Email */}
+        <div className="login-campo">
+          <label>CORREO</label>
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="correo@gmail.com"
+            disabled={cargando}
+          />
         </div>
-      )}
+
+        {/* Contraseña — no en recuperar */}
+        {modo !== 'recuperar' && (
+          <div className="login-campo">
+            <label>CONTRASEÑA</label>
+            <input
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Mínimo 6 caracteres"
+              disabled={cargando}
+            />
+          </div>
+        )}
+
+        {/* Mensajes */}
+        {error  && <p className="login-error">► {error}</p>}
+        {exito  && <p className="login-exito">► {exito}</p>}
+
+        {/* Botón principal */}
+        <button
+          className="btn-login"
+          onClick={handleSubmit}
+          disabled={cargando}
+        >
+          {cargando ? '⏳ CARGANDO...' :
+            modo === 'login'    ? '► INGRESAR'        :
+            modo === 'registro' ? '► CREAR CUENTA'    :
+                                  '► ENVIAR CORREO'
+          }
+        </button>
+
+        {/* Link olvidé contraseña */}
+        {modo === 'login' && (
+          <button
+            className="btn-recuperar"
+            onClick={() => cambiarModo('recuperar')}
+          >
+            ¿Olvidaste tu contraseña?
+          </button>
+        )}
+
+        {/* Link volver al login */}
+        {modo === 'recuperar' && (
+          <button
+            className="btn-recuperar"
+            onClick={() => cambiarModo('login')}
+          >
+            ← Volver al login
+          </button>
+        )}
+
+      </div>
 
       <p className="login-footer">Pura vida, mae 🇨🇷</p>
 

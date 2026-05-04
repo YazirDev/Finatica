@@ -59,10 +59,9 @@
 .lf-blanco        { background: var(--blanco); }
 .lf-rojo          { background: var(--rojo); flex: 2 !important; }
 
-/* ── Tabs de modo ── */
+/* ── Tabs ── */
 .login-tabs {
   display: flex;
-  gap: 0;
   border: 2px solid var(--border);
   margin-top: 4px;
 }
@@ -79,15 +78,8 @@
   text-transform: uppercase;
 }
 
-.login-tab:hover {
-  color: var(--yellow);
-  background: var(--bg3);
-}
-
-.login-tab.activo {
-  background: var(--accent);
-  color: #fff;
-}
+.login-tab:hover  { color: var(--yellow); background: var(--bg3); }
+.login-tab.activo { background: var(--accent); color: #fff; }
 
 /* ── Formulario ── */
 .login-form {
@@ -121,7 +113,7 @@
   outline: none;
   box-shadow: 2px 2px 0 var(--border);
   width: 100%;
-  transition: border-color 0.1s;
+  border-radius: 0;
 }
 
 .login-campo input:focus {
@@ -129,11 +121,9 @@
   box-shadow: 2px 2px 0 var(--yellow);
 }
 
-.login-campo input:disabled {
-  opacity: 0.6;
-}
+.login-campo input:disabled { opacity: 0.6; }
 
-/* ── Error ── */
+/* ── Mensajes ── */
 .login-error {
   font-size: 8px;
   font-family: var(--pixel);
@@ -142,6 +132,17 @@
   line-height: 2;
   background: rgba(231, 76, 60, 0.1);
   border: 1px solid var(--red);
+  padding: 8px;
+}
+
+.login-exito {
+  font-size: 8px;
+  font-family: var(--pixel);
+  color: var(--green);
+  text-align: center;
+  line-height: 2;
+  background: rgba(46, 204, 113, 0.1);
+  border: 1px solid var(--green);
   padding: 8px;
 }
 
@@ -156,9 +157,9 @@
   box-shadow: 3px 3px 0 #8b5000;
   text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.1s;
   width: 100%;
   margin-top: 4px;
+  transition: all 0.1s;
 }
 
 .btn-login:hover:not(:disabled) {
@@ -167,10 +168,22 @@
   box-shadow: 4px 4px 0 #8b5000;
 }
 
-.btn-login:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── Botón recuperar contraseña ── */
+.btn-recuperar {
+  background: transparent;
+  color: var(--muted);
+  font-size: 10px;
+  font-family: var(--vt);
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  padding: 4px;
+  transition: color 0.1s;
 }
+
+.btn-recuperar:hover { color: var(--yellow); }
 
 /* ── Footer ── */
 .login-footer {
@@ -178,30 +191,4 @@
   font-family: var(--vt);
   color: var(--muted);
   margin-top: 4px;
-}
-
-/* ── Mensaje de paso actual ── */
-.login-paso {
-  font-size: 9px;
-  font-family: var(--pixel);
-  color: var(--green);
-  text-align: center;
-  line-height: 2;
-}
-
-/* ── Instrucciones durante el login ── */
-.login-instrucciones {
-  background: var(--bg2);
-  border: 2px solid var(--border);
-  padding: 14px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 280px;
-}
-
-.login-instrucciones p {
-  font-size: 11px;
-  font-family: var(--vt);
-  color: var(--muted);
 }
