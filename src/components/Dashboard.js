@@ -15,7 +15,7 @@ import {
 import './Dashboard.css';
 
 // Versión de la app desde el archivo .env
-const VERSION = process.env.REACT_APP_VERSION || '1.4.0';
+const VERSION = process.env.REACT_APP_VERSION || '1.6.0';
 
 /**
  * Formatea un número como colones costarricenses.
