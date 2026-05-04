@@ -3,6 +3,8 @@
 // Maneja: ventana y autenticación OAuth con Google
 // usando un servidor HTTP local temporal para capturar el token
 // ============================================================
+require('dotenv').config();
+
 
 const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path    = require('path');
@@ -16,8 +18,8 @@ const isDev = process.env.NODE_ENV === 'development';
 let mainWindow;
 
 // ─── CREDENCIALES OAUTH ───────────────────────────────────────
-const GOOGLE_CLIENT_ID     = '392306051208-21o454lk3r8q5p8uhean60ecb6ntri02.apps.googleusercontent.com';
-const GOOGLE_CLIENT_SECRET = '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';
+const GOOGLE_CLIENT_ID     = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const REDIRECT_PORT        = 9876;
 const REDIRECT_URI         = `http://localhost:${REDIRECT_PORT}/callback`;
 
