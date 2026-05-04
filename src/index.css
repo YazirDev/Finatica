@@ -15,16 +15,16 @@
 /* ── Variables de color y tipografía ── */
 :root {
   /* Fondos */
-  --bg:     #1a0a2e;   /* Fondo principal */
-  --bg2:    #2d1b4e;   /* Fondo de cards */
-  --bg3:    #3d2660;   /* Fondo de inputs y hover */
+  --bg:     #0a0b2e;   /* Fondo principal */
+  --bg2:    #1b304e;   /* Fondo de cards */
+  --bg3:    #263360;   /* Fondo de inputs y hover */
 
   /* Bordes */
-  --border: #6b3fa0;
+  --border: #3f84a0;
 
   /* Texto */
   --text:   #f0e6ff;
-  --muted:  #9b7ec8;
+  --muted:  #7ec8c8;
 
   /* Colores de Costa Rica */
   --rojo:   #c8102e;   /* Rojo bandera */
