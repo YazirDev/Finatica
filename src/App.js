@@ -1,4 +1,19 @@
+// ============================================================
+// App.js — Componente raíz con autenticación Firebase
+// Maneja: login, estado global y navegación entre vistas
+// ============================================================
+
 import React, { useState, useEffect, useCallback } from 'react';
+import { onAuthStateChanged, signOut }             from 'firebase/auth';
+import { auth }                                    from './firebase';
+import {
+  getCuentas,
+  getCategorias,
+  getMovimientos,
+  procesarRecurrentes,
+  inicializarUsuario
+} from './db';
+
 import TitleBar        from './components/TitleBar';
 import Sidebar         from './components/Sidebar';
 import Dashboard       from './components/Dashboard';
@@ -6,27 +21,43 @@ import Cuentas         from './components/Cuentas';
 import Movimientos     from './components/Movimientos';
 import Estadisticas    from './components/Estadisticas';
 import NuevoMovimiento from './components/NuevoMovimiento';
+import Login           from './components/Login';
 import './App.css';
 
 export default function App() {
 
-  // ── Estado global ──
-  const [view,        setView]        = useState('dashboard'); // Vista activa
-  const [cuentas,     setCuentas]     = useState([]);          // Lista de cuentas
-  const [movimientos, setMovimientos] = useState([]);          // Lista de movimientos
-  const [categorias,  setCategorias]  = useState([]);          // Lista de categorías
-  const [showModal,   setShowModal]   = useState(false);       // Modal nuevo movimiento
-  const [loading,     setLoading]     = useState(true);        // Pantalla de carga
+  // ── Estado de autenticación ──
+  const [usuario,     setUsuario]     = useState(null);   // Usuario de Firebase
+  const [authListo,   setAuthListo]   = useState(false);  // Firebase terminó de verificar
+
+  // ── Estado de datos ──
+  const [view,        setView]        = useState('dashboard');
+  const [cuentas,     setCuentas]     = useState([]);
+  const [movimientos, setMovimientos] = useState([]);
+  const [categorias,  setCategorias]  = useState([]);
+  const [showModal,   setShowModal]   = useState(false);
+  const [loading,     setLoading]     = useState(true);
+
+  // Escuchar cambios de autenticación
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setUsuario(user);
+      setAuthListo(true);
+    });
+    return unsubscribe; // Limpiar el listener al desmontar
+  }, []);
 
   /**
-   * Recarga todos los datos desde la base de datos.
-   * Se ejecuta al iniciar y después de cada cambio.
+   * Recarga todos los datos del usuario desde Firestore
    */
   const reload = useCallback(async () => {
+    if (!auth.currentUser) return;
+
+    setLoading(true);
     const [c, m, cat] = await Promise.all([
-      window.api.getCuentas(),
-      window.api.getMovimientos({ limit: 500 }),
-      window.api.getCategorias(),
+      getCuentas(),
+      getMovimientos(),
+      getCategorias(),
     ]);
 
     setCuentas(c);
@@ -35,14 +66,32 @@ export default function App() {
     setLoading(false);
   }, []);
 
-  // Al iniciar: cargar datos y procesar recurrentes automáticos
+  // Al iniciar sesión: inicializar datos y cargar todo
   useEffect(() => {
-    reload();
-    window.api.procesarRecurrentes().then(() => reload());
-  }, [reload]);
+    if (!usuario) return;
 
-  // ── Pantalla de carga ──
-  if (loading) {
+    const init = async () => {
+      await inicializarUsuario();
+      await procesarRecurrentes();
+      await reload();
+    };
+
+    init();
+  }, [usuario, reload]);
+
+  /**
+   * Cierra la sesión del usuario
+   */
+  async function cerrarSesion() {
+    await signOut(auth);
+    setCuentas([]);
+    setMovimientos([]);
+    setCategorias([]);
+    setView('dashboard');
+  }
+
+  // ── Mientras Firebase verifica la sesión ──
+  if (!authListo) {
     return (
       <div className="loading-screen">
         <div className="loading-logo">🦎</div>
@@ -51,23 +100,35 @@ export default function App() {
     );
   }
 
+  // ── Si no hay sesión, mostrar login ──
+  if (!usuario) {
+    return <Login />;
+  }
+
+  // ── Pantalla de carga de datos ──
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-logo">🦎</div>
+        <p className="loading-texto">CARGANDO DATOS...</p>
+      </div>
+    );
+  }
+
   // ── Interfaz principal ──
   return (
     <div className="app-shell">
 
-      {/* Barra de título personalizada */}
-      <TitleBar />
+      <TitleBar usuario={usuario} onCerrarSesion={cerrarSesion} />
 
       <div className="app-body">
 
-        {/* Menú lateral */}
         <Sidebar
           view={view}
           setView={setView}
           onNuevo={() => setShowModal(true)}
         />
 
-        {/* Contenido principal según la vista activa */}
         <main className="app-main">
           {view === 'dashboard'    && (
             <Dashboard
@@ -99,7 +160,6 @@ export default function App() {
         </main>
       </div>
 
-      {/* Modal para registrar nuevo movimiento */}
       {showModal && (
         <NuevoMovimiento
           cuentas={cuentas}
