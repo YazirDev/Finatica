@@ -4,8 +4,8 @@
 // ============================================================
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { onAuthStateChanged, signOut }             from 'firebase/auth';
-import { auth }                                    from './firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from './firebase';
 import {
   getCuentas,
   getCategorias,
@@ -14,29 +14,29 @@ import {
   inicializarUsuario
 } from './db';
 
-import TitleBar        from './components/TitleBar';
-import Sidebar         from './components/Sidebar';
-import Dashboard       from './components/Dashboard';
-import Cuentas         from './components/Cuentas';
-import Movimientos     from './components/Movimientos';
-import Estadisticas    from './components/Estadisticas';
+import TitleBar from './components/TitleBar';
+import Sidebar from './components/Sidebar';
+import Dashboard from './components/Dashboard';
+import Cuentas from './components/Cuentas';
+import Movimientos from './components/Movimientos';
+import Estadisticas from './components/Estadisticas';
 import NuevoMovimiento from './components/NuevoMovimiento';
-import Login           from './components/Login';
+import Login from './components/Login';
 import './App.css';
 
 export default function App() {
 
   // ── Estado de autenticación ──
-  const [usuario,     setUsuario]     = useState(null);   // Usuario de Firebase
-  const [authListo,   setAuthListo]   = useState(false);  // Firebase terminó de verificar
+  const [usuario, setUsuario] = useState(null);   // Usuario de Firebase
+  const [authListo, setAuthListo] = useState(false);  // Firebase terminó de verificar
 
   // ── Estado de datos ──
-  const [view,        setView]        = useState('dashboard');
-  const [cuentas,     setCuentas]     = useState([]);
+  const [view, setView] = useState('dashboard');
+  const [cuentas, setCuentas] = useState([]);
   const [movimientos, setMovimientos] = useState([]);
-  const [categorias,  setCategorias]  = useState([]);
-  const [showModal,   setShowModal]   = useState(false);
-  const [loading,     setLoading]     = useState(true);
+  const [categorias, setCategorias] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Escuchar cambios de autenticación
   useEffect(() => {
@@ -130,21 +130,22 @@ export default function App() {
         />
 
         <main className="app-main">
-          {view === 'dashboard'    && (
+          {view === 'dashboard' && (
             <Dashboard
               cuentas={cuentas}
               movimientos={movimientos}
               onNuevo={() => setShowModal(true)}
+              usuario={usuario}
             />
           )}
-          {view === 'cuentas'      && (
+          {view === 'cuentas' && (
             <Cuentas
               cuentas={cuentas}
               categorias={categorias}
               reload={reload}
             />
           )}
-          {view === 'movimientos'  && (
+          {view === 'movimientos' && (
             <Movimientos
               movimientos={movimientos}
               categorias={categorias}
