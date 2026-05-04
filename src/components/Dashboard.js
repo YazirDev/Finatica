@@ -3,6 +3,7 @@
 // Muestra: totales, cuentas, gráfica de flujo y movimientos recientes
 // ============================================================
 
+
 import React, { useMemo } from 'react';
 import {
   AreaChart,
@@ -28,7 +29,7 @@ function formatColones(numero) {
 }
 
 // ── Componente principal ──────────────────────────────────────
-export default function Dashboard({ cuentas, movimientos, onNuevo }) {
+export default function Dashboard({ cuentas, movimientos, onNuevo, usuario }) {
 
   // Total de todos los saldos de cuentas
   const totalActivos = cuentas.reduce((suma, c) => suma + c.saldo, 0);
@@ -92,7 +93,7 @@ export default function Dashboard({ cuentas, movimientos, onNuevo }) {
         <div>
           <h1 className="page-title">🏠 PÁGINA PRINCIPAL</h1>
           <p className="page-subtitle">
-            🇨🇷 Pura vida, mae ·{' '}
+            🇨🇷 Hola {usuario?.displayName || usuario?.email} · <span className="version-badge">v{VERSION}</span>
             <span className="version-badge">v{VERSION}</span>
           </p>
         </div>
