@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls electron.js)",
+      "Bash(ls electron/main.js)",
+      "Bash(ls .env)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\Admin\\Documents\\GitHub\\Finatica"
+    ]
+  }
+}

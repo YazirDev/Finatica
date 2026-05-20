@@ -94,7 +94,6 @@ export default function Dashboard({ cuentas, movimientos, onNuevo, usuario }) {
           <h1 className="page-title">🏠 PÁGINA PRINCIPAL</h1>
           <p className="page-subtitle">
             🇨🇷 Hola {usuario?.displayName || usuario?.email} · <span className="version-badge">v{VERSION}</span>
-            <span className="version-badge">v{VERSION}</span>
           </p>
         </div>
         <button className="btn-nuevo-mov" onClick={onNuevo}>
