@@ -10,32 +10,33 @@ import {
   updateProfile,
   sendPasswordResetEmail
 } from 'firebase/auth';
-import { auth } from '../firebase';
+import { auth } from '../../config/firebase';
 import './Login.css';
+import { GoogleAuthProvider, signInWithCredential } from 'firebase/auth';
 
 export default function Login() {
 
   // Modo: 'login', 'registro' o 'recuperar'
-  const [modo,     setModo]     = useState('login');
-  const [nombre,   setNombre]   = useState('');
-  const [email,    setEmail]    = useState('');
+  const [modo, setModo] = useState('login');
+  const [nombre, setNombre] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [cargando, setCargando] = useState(false);
-  const [error,    setError]    = useState('');
-  const [exito,    setExito]    = useState('');
+  const [error, setError] = useState('');
+  const [exito, setExito] = useState('');
 
   /**
    * Traduce los códigos de error de Firebase a español
    */
   function traducirError(code) {
     const errores = {
-      'auth/invalid-email':        'El correo no es válido.',
-      'auth/user-not-found':       'No existe una cuenta con ese correo.',
-      'auth/wrong-password':       'Contraseña incorrecta.',
-      'auth/invalid-credential':   'Correo o contraseña incorrectos.',
+      'auth/invalid-email': 'El correo no es válido.',
+      'auth/user-not-found': 'No existe una cuenta con ese correo.',
+      'auth/wrong-password': 'Contraseña incorrecta.',
+      'auth/invalid-credential': 'Correo o contraseña incorrectos.',
       'auth/email-already-in-use': 'Ya existe una cuenta con ese correo.',
-      'auth/weak-password':        'La contraseña debe tener al menos 6 caracteres.',
-      'auth/too-many-requests':    'Demasiados intentos. Esperá unos minutos.',
+      'auth/weak-password': 'La contraseña debe tener al menos 6 caracteres.',
+      'auth/too-many-requests': 'Demasiados intentos. Esperá unos minutos.',
     };
     return errores[code] || 'Ocurrió un error. Intentá de nuevo.';
   }
@@ -103,6 +104,21 @@ export default function Login() {
     if (e.key === 'Enter') handleSubmit();
   }
 
+  async function loginConGoogle() {
+    setError('');
+    setCargando(true);
+    try {
+      const result = await window.api.loginGoogle();
+      if (!result.success) throw new Error(result.error);
+      const credential = GoogleAuthProvider.credential(result.tokens.id_token);
+      await signInWithCredential(auth, credential);
+    } catch (err) {
+      console.error('Google login error:', err);
+      setError('Error: ' + (err.message || err.code || JSON.stringify(err)));
+      setCargando(false);
+    }
+  }
+
   return (
     <div className="login-screen">
 
@@ -113,11 +129,11 @@ export default function Login() {
 
       {/* Mini bandera */}
       <div className="login-flag">
-        <span className="lf-azul"  />
-        <span className="lf-blanco"/>
-        <span className="lf-rojo"  />
-        <span className="lf-blanco"/>
-        <span className="lf-azul"  />
+        <span className="lf-azul" />
+        <span className="lf-blanco" />
+        <span className="lf-rojo" />
+        <span className="lf-blanco" />
+        <span className="lf-azul" />
       </div>
 
       {/* Tabs */}
@@ -183,8 +199,8 @@ export default function Login() {
         )}
 
         {/* Mensajes */}
-        {error  && <p className="login-error">► {error}</p>}
-        {exito  && <p className="login-exito">► {exito}</p>}
+        {error && <p className="login-error">► {error}</p>}
+        {exito && <p className="login-exito">► {exito}</p>}
 
         {/* Botón principal */}
         <button
@@ -193,10 +209,14 @@ export default function Login() {
           disabled={cargando}
         >
           {cargando ? '⏳ CARGANDO...' :
-            modo === 'login'    ? '► INGRESAR'        :
-            modo === 'registro' ? '► CREAR CUENTA'    :
-                                  '► ENVIAR CORREO'
+            modo === 'login' ? '► INGRESAR' :
+              modo === 'registro' ? '► CREAR CUENTA' :
+                '► ENVIAR CORREO'
           }
+        </button>
+        {/* Botón Google */}
+        <button onClick={loginConGoogle} className="btn-google" disabled={cargando}>
+          {cargando ? '⏳ CARGANDO...' : '► INGRESAR CON GOOGLE'}
         </button>
 
         {/* Link olvidé contraseña */}

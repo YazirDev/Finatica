@@ -10,7 +10,7 @@ import {
   crearRecurrente,
   eliminarRecurrente,
   toggleRecurrente
-} from '../db';
+} from '../../config/db';
 import './Movimientos.css';
 
 const ICONOS   = { ingreso: '▲', egreso: '▼', transferencia: '◄►' };

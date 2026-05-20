@@ -5,23 +5,23 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { auth } from './firebase';
+import { auth } from './config/firebase';
 import {
   getCuentas,
   getCategorias,
   getMovimientos,
   procesarRecurrentes,
   inicializarUsuario
-} from './db';
+} from './config/db';
 
-import TitleBar from './components/TitleBar';
-import Sidebar from './components/Sidebar';
-import Dashboard from './components/Dashboard';
-import Cuentas from './components/Cuentas';
-import Movimientos from './components/Movimientos';
-import Estadisticas from './components/Estadisticas';
-import NuevoMovimiento from './components/NuevoMovimiento';
-import Login from './components/Login';
+import TitleBar from './components/layout/TitleBar';
+import Sidebar from './components/layout/Sidebar';
+import Dashboard from './components/views/Dashboard';
+import Cuentas from './components/views/Cuentas';
+import Movimientos from './components/views/Movimientos';
+import Estadisticas from './components/views/Estadisticas';
+import NuevoMovimiento from './components/views/NuevoMovimiento';
+import Login from './components/auth/Login';
 import './App.css';
 
 export default function App() {

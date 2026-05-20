@@ -1,16 +1,16 @@
 {
   "name": "finatica",
-  "version": "1.6.0",
+  "version": "2.0.0",
   "description": "Control de finanzas personales - Finatica CR",
   "author": "Finatica",
-  "main": "electron.js",
+  "main": "electron/main.js",
   "homepage": "./",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "electron": "electron .",
-    "dev": "concurrently \"cross-env BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && electron .\"",
-    "package": "react-scripts build && xcopy /Y electron.js build\\ && xcopy /Y preload.js build\\ && electron-builder"
+    "dev": "concurrently \"cross-env BROWSER=none react-scripts start\" \"wait-on http://localhost:3000 && cross-env NODE_ENV=development electron .\"",
+    "package": "react-scripts build && xcopy /E /I /Y electron build\\electron && electron-builder"
   },
   "build": {
     "appId": "com.finatica.app",
@@ -31,11 +31,12 @@
       "package.json"
     ],
     "extraMetadata": {
-      "main": "build/electron.js"
+      "main": "build/electron/main.js"
     }
   },
   "dependencies": {
-    "dotenv": "^17.4.2",
+    "dotenv": "^16.6.1",
+    "electron-google-oauth2": "^3.1.0",
     "firebase": "^10.8.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

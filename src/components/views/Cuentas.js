@@ -8,7 +8,7 @@ import {
   eliminarCuenta,
   crearCategoria,
   eliminarCategoria
-} from '../db';
+} from '../../config/db';
 import './Cuentas.css';
 
 const TIPOS_CUENTA = [

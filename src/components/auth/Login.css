@@ -192,3 +192,24 @@
   color: var(--muted);
   margin-top: 4px;
 }
+
+.btn-google {
+  background: var(--bg3);
+  color: var(--text);
+  font-size: 11px;
+  font-family: var(--vt);
+  padding: 12px 20px;
+  border: 2px solid var(--border);
+  box-shadow: 2px 2px 0 var(--border);
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.1s;
+}
+
+.btn-google:hover:not(:disabled) {
+  border-color: var(--yellow);
+  box-shadow: 2px 2px 0 var(--yellow);
+  color: var(--yellow);
+}
+
+.btn-google:disabled { opacity: 0.6; cursor: not-allowed; }

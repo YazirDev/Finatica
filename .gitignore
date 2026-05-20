@@ -8,8 +8,10 @@ build/
 dist/
 
 # Variables de entorno (pueden tener datos sensibles)
+.env
 .env.local
 .env.production
+.env.*
 
 # Logs
 npm-debug.log*

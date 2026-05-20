@@ -1,6 +1,15 @@
-require('dotenv').config();
+// ============================================================
+// electron.js — Proceso principal de Electron
+// Con Firebase Auth y Google OAuth
+// ============================================================
 
-const { app, BrowserWindow, ipcMain } = require('electron');
+require('dotenv').config(); // ← SIEMPRE primera línea
+
+console.log('process.versions.electron:', process.versions.electron);
+console.log('process.versions.node:', process.versions.node);
+const _electronModule = require('electron');
+console.log('electron module type:', typeof _electronModule);
+const { app, BrowserWindow, ipcMain } = _electronModule;
 const path = require('path');
 const isDev = process.env.NODE_ENV === 'development';
 const clientId     = process.env.GOOGLE_CLIENT_ID;
@@ -33,6 +42,7 @@ function createWindow() {
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
   }
 }
+
 
 app.whenReady().then(() => {
   createWindow();

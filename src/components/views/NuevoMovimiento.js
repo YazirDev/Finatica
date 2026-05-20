@@ -4,7 +4,7 @@
 // ============================================================
 
 import React, { useState } from 'react';
-import { registrarMovimiento } from '../db';
+import { registrarMovimiento } from '../../config/db';
 
 const TIPOS = [
   { value: 'ingreso',       label: '▲ INGRESO',  color: 'var(--green)' },
