@@ -42,7 +42,7 @@ export default function Sidebar({ view, setView, onNuevo }) {
           </button>
         ))}
       </nav>
-      /**/hola  */
+      
       {/* Botón de nuevo movimiento */}
       <button className="btn-nuevo" onClick={onNuevo}>
         ＋ NUEVO MOV.
